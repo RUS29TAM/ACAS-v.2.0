@@ -22,6 +22,12 @@ export default async function CenterClientsPage({params,}: {params: { id: string
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
+                <Link href="/" className="btn btn-outline-secondary me-2">
+                    На главную
+                </Link>
+                <Link href={`/centers/${centerId}`} className="btn btn-outline-secondary me-2">
+                    В центр
+                </Link>
                 <h1>Клиенты центра: {center.name}</h1>
                 <Link href={`/centers/${centerId}`} className="btn btn-outline-secondary">
                     Назад к центру

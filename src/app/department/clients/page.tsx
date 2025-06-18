@@ -43,6 +43,12 @@ export default async function DepartmentClientsPage({
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
+                <Link href="/" className="btn btn-outline-secondary me-2">
+                    На главную
+                </Link>
+                <Link href="/department" className="btn btn-outline-secondary me-2">
+                    Назад
+                </Link>
                 <h1>Все клиенты отдела</h1>
                 <div>
                     <ExcelExportButton allCenters={true} />

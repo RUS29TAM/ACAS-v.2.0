@@ -2,6 +2,7 @@ import ClientTable from '@/components/ClientTable/ClientTable';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import ExcelExportButton from '@/components/ExcelExportButton/ExcelExportButton';
 import prisma from '@/lib/prisma';
+import Link from "next/link";
 
 export default async function DepartmentPage() {
     const recentClients = await prisma.client.findMany({
@@ -27,6 +28,9 @@ export default async function DepartmentPage() {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
+                <Link href="/" className="btn btn-outline-secondary me-2">
+                    На главную
+                </Link>
                 <h1>Отдел</h1>
                 {/* Убрали centerId, так как allCenters=true */}
                 <ExcelExportButton allCenters={true} centerId={0} />

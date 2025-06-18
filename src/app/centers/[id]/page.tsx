@@ -33,6 +33,9 @@ export default async function CenterPage({ params }: CenterPageProps) {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
+                <Link href="/" className="btn btn-outline-secondary me-2">
+                    На главную
+                </Link>
                 <h1>{center.name}</h1>
                 <div>
                     <Link href={`/centers/${centerId}/add-client`} className="btn btn-primary me-2">
