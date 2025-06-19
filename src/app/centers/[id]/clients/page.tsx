@@ -2,10 +2,13 @@ import ClientTable from '@/components/ClientTable/ClientTable';
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 
-export default async function CenterClientsPage({params,}: {params: { id: string };}) {
+type PageProps = {
+    params: Promise<{ id: string }>;
+};
+export default async function CenterClientsPage({ params }: PageProps) {
     const { id } = await params;
 
-    const centerId = parseInt(id);
+    const centerId = parseInt(await id);
     const center = await prisma.center.findUnique({
         where: { id: centerId },
     });
