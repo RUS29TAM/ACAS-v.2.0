@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface CenterPageProps {
-    params: {
-        id: string;
-    };
+    params: Promise<{ id: string }>;
+
 }
 
 export default async function CenterPage({ params }: CenterPageProps) {
