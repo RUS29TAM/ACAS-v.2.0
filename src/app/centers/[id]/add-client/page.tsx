@@ -1,7 +1,10 @@
 import ClientForm from '@/components/ClientForm/ClientForm';
 import prisma from '@/lib/prisma';
 
-export default async function AddClientPage({params,}: {params: { id: string };}) {
+type PageProps = {
+    params: Promise<{ id: string }>;
+};
+export default async function AddClientPage({ params }: PageProps) {
     const { id } = await params;
 
     const centerId = parseInt(id);
