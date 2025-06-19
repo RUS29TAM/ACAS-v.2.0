@@ -1,18 +1,30 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function PUT(
-    request: Request,
-    { params }: { params: { id: string } }
-) {
+
+type RouteParams<T extends Record<string, string>> = {
+    params: Promise<T>;
+};
+
+export async function PUT(request: Request, { params }: RouteParams<{ id: string }>) {
+    const { id } = await params;
+
     try {
-        const clientId = Number(params.id);
+        const clientId = parseInt(await id);
+
+        if (isNaN(clientId)) {
+            return NextResponse.json(
+                { error: 'Неверный ID клиента' },
+                { status: 400 }
+            );
+        }
+
         const data = await request.json();
 
-        // Валидация
+        // Валидация обязательных полей
         if (!data.inn || !data.lastName || !data.firstName || !data.phone) {
             return NextResponse.json(
-                { error: 'Заполните обязательные поля' },
+                { error: 'Заполните обязательные поля: ИНН, Фамилия, Имя, Телефон' },
                 { status: 400 }
             );
         }
