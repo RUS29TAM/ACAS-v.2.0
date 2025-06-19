@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(request: Request) {
+
+type RouteParams<T extends Record<string, string>> = {
+    params: Promise<T>;
+};
+
+export async function GET(request: Request, { params }: RouteParams<{ id: string }>) {
     const { searchParams } = new URL(request.url);
 
     const page = Number(searchParams.get('page')) || 1;
@@ -32,7 +37,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ clients, total });
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request, { params }: RouteParams<{ id: string }>) {
     try {
         const data = await request.json();
 
@@ -73,7 +78,7 @@ export async function POST(request: Request) {
     }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: Request, { params }: RouteParams<{ id: string }>) {
     try {
         const { searchParams } = new URL(request.url);
         const id = searchParams.get('id');
