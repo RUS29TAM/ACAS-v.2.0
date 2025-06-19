@@ -1,23 +1,30 @@
 import ClientTable from '@/components/ClientTable/ClientTable';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import ExcelExportButton from '@/components/ExcelExportButton/ExcelExportButton';
-import  prisma  from '@/lib/prisma'; // Используем именованный импорт если export был не default
+import  prisma  from '@/lib/prisma';
 import Link from 'next/link';
 import Pagination from "@/components/Pagination";
-import type { Prisma } from '@prisma/client'; // Правильный импорт типов Prisma
 
-export default async function DepartmentClientsPage({
-                                                        searchParams,
-                                                    }: {
-    searchParams: { [key: string]: string | string[] | undefined };
-}) {
-    const page = Number(searchParams.page) || 1;
+// Тип для searchParams (можно переиспользовать в других страницах)
+type SearchParams = Promise<{
+    [key: string]: string | string[] | undefined;
+}>;
+
+// Тип пропсов страницы
+type PageProps = {
+    searchParams: SearchParams;
+};
+
+export default async function DepartmentClientsPage({ searchParams }: PageProps) {
+    const params = await searchParams;
+
+    const page = Number(params.page) || 1;
     const perPage = 10;
-    const searchQuery = searchParams.search?.toString() || '';
-    const centerFilter = searchParams.center?.toString();
+    const searchQuery = params.search?.toString() || '';
+    const centerFilter = params.center?.toString();
 
-    // Правильное использование типа
-    const where: Prisma.ClientWhereInput = {
+    // Условия фильтрации
+    const where: any = {
         ...(searchQuery && {
             OR: [
                 { inn: { contains: searchQuery } },
@@ -28,6 +35,7 @@ export default async function DepartmentClientsPage({
         ...(centerFilter && { centerId: Number(centerFilter) }),
     };
 
+    // Параллельные запросы
     const [clients, totalClients, centers] = await Promise.all([
         prisma.client.findMany({
             where,
@@ -63,7 +71,7 @@ export default async function DepartmentClientsPage({
             </div>
 
             <ClientTable
-                clients={clients.map(client => ({
+                clients={clients.map((client) => ({
                     ...client,
                     centerName: client.Center.name,
                 }))}
