@@ -4,16 +4,16 @@ const prisma = new PrismaClient();
 async function main() {
     await prisma.center.createMany({
         data: [
-            { name: 'Центр 1', description: 'Описание центра 1' },
-            { name: 'Центр 2', description: 'Описание центра 2' },
-            { name: 'Центр 3', description: 'Описание центра 3' },
-            { name: 'Центр 4', description: 'Описание центра 4' },
-            { name: 'Центр 5', description: 'Описание центра 5' },
-            { name: 'Центр 6', description: 'Описание центра 6' },
-            { name: 'Центр 7', description: 'Описание центра 7' },
-            { name: 'Центр 8', description: 'Описание центра 8' },
-            { name: 'Центр 9', description: 'Описание центра 9' },
-            { name: 'Отдел', description: 'Главный отдел', isDepartment: true }
+            { name: 'ЦПП', description: 'Центр поддержки предпринимательства' },
+            { name: 'ЦКР', description: 'Центр кластерного развития' },
+            { name: 'ЦРИД', description: 'Центр развития инвестиционной деятельности' },
+            { name: 'Инноватика', description: 'Центр развития инновационной деятельности' },
+            { name: 'ГЧП', description: 'Государственно-частное партнерство' },
+            { name: 'ЦПЭ', description: 'Центр поддержки экспорта' },
+            { name: 'РЦК', description: 'Региональный центр компетенций' },
+            { name: 'СМиА', description: 'Служба маркетинга и аналитики' },
+            { name: 'Входная группа', description: 'Клиенты входящего потока' },
+            { name: 'Аналитик', description: 'Отчеты центров', isDepartment: true }
         ]
     });
 }
