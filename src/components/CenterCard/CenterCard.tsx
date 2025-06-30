@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './CenterCard.module.css';
+import styles from '@/app/styles/page.module.css';
 
 interface CenterCardProps {
     id: number;
