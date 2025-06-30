@@ -11,6 +11,9 @@ interface ClientTableProps {
     sortable?: boolean;
 }
 
+/*TODO
+* убрять инлайн стили style={{userSelect: "none"}}
+* */
 
 export default function ClientTable({ clients }: ClientTableProps) {
     if (clients.length === 0) {
@@ -18,7 +21,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
     }
 
     return (
-        <div className="table-responsive">
+        <div style={{userSelect: "none"}} className="table-responsive">
             <table className="table table-striped table-hover">
                 <thead>
                 <tr>
