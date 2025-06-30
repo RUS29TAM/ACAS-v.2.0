@@ -1,8 +1,8 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { CLIENT_TYPES, COMMUNICATION_TYPES, PROJECTS } from '@/lib/constants';
+import {debounce} from "next/dist/server/utils";
 
 interface ClientFormProps {
     centerId: number;
@@ -40,6 +40,42 @@ export default function ClientForm({ centerId }: ClientFormProps) {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [isCheckingInn, setIsCheckingInn] = useState(false);
+
+    const checkInn = useCallback(debounce(async (inn: string) => {
+        if (!inn) return;
+
+        setIsCheckingInn(true);
+        try {
+            const response = await fetch(`/api/clients/last-by-inn?inn=${inn}`);
+            if (response.ok) {
+                const lastClient = await response.json();
+                if (lastClient) {
+                    setFormData(prev => ({
+                        ...prev,
+                        organizationName: lastClient.organizationName || '',
+                        lastName: lastClient.lastName,
+                        firstName: lastClient.firstName,
+                        phone: lastClient.phone,
+                        email: lastClient.email || '',
+                        clientType: lastClient.clientType,
+                        smsp: lastClient.smsp,
+                        // Остальные поля оставляем как есть
+                    }));
+                }
+            }
+        } catch (error) {
+            console.error('Error checking INN:', error);
+        } finally {
+            setIsCheckingInn(false);
+        }
+    }, 500), []);
+
+    const handleInnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData(prev => ({ ...prev, inn: value }));
+        checkInn(value);
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -103,9 +139,12 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                                 id="inn"
                                 name="inn"
                                 value={formData.inn}
-                                onChange={handleChange}
+                                onChange={handleInnChange}
                                 required
                             />
+                            {isCheckingInn && <span className="position-absolute top-50 end-0 translate-middle-y me-2">{isCheckingInn && (
+                                <div className="form-text">Проверяем ИНН...</div>
+                            )}</span>}
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="organizationName" className="form-label">Название организации</label>
