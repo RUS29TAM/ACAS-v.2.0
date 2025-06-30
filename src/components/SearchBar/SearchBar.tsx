@@ -28,7 +28,7 @@ export default function SearchBar({
                 <input
                     type="text"
                     className="form-control"
-                    placeholder="Поиск по ИНН, ФИО или организации"
+                    placeholder="Поиск по ИНН, фамилии или организации"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
