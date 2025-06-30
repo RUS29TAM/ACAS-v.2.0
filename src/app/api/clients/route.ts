@@ -49,7 +49,7 @@ export async function POST(request: Request, { params }: RouteParams<{ id: strin
             );
         }
 
-        // Удаляем проверку на уникальность ИНН
+        // Создаем нового клиента (разрешаем дубликаты ИНН)
         const client = await prisma.client.create({
             data: {
                 inn: data.inn,
