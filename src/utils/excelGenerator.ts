@@ -6,6 +6,7 @@ export async function generateExcelForCenter(clients: Client[], centerName: stri
 
     // Заголовки
     worksheet.columns = [
+        { header: 'id', key: 'id', width: 15 },
         { header: 'ИНН', key: 'inn', width: 15 },
         { header: 'Фамилия', key: 'lastName', width: 15 },
         { header: 'Имя', key: 'firstName', width: 15 },
@@ -17,12 +18,16 @@ export async function generateExcelForCenter(clients: Client[], centerName: stri
         { header: 'Субъект МСП', key: 'smsp', width: 15 },
         { header: 'Вид коммуникации', key: 'communicationType', width: 20 },
         { header: 'Проект', key: 'project', width: 15 },
+        { header: 'Комментарий', key: 'notes', width: 15 },
+        { header: 'Центр', key: 'centerId', width: 15 },
         { header: 'Дата создания', key: 'createdAt', width: 20 },
+        { header: 'Дата обновления', key: 'updatedAt', width: 20 },
     ];
 
     // Данные
     clients.forEach(client => {
         worksheet.addRow({
+            id: client.id,
             inn: client.inn,
             lastName: client.lastName,
             firstName: client.firstName,
@@ -34,7 +39,10 @@ export async function generateExcelForCenter(clients: Client[], centerName: stri
             smsp: client.smsp ? 'Да' : 'Нет',
             communicationType: client.communicationType,
             project: client.project,
+            notes: client.notes,
+            centerId: client.centerId,
             createdAt: new Date(client.createdAt).toLocaleString(),
+            updatedAt: new Date(client.updatedAt).toLocaleString(),
         });
     });
 
