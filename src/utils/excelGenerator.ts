@@ -40,7 +40,17 @@ export async function generateExcelForCenter(clients: Client[], centerName: stri
             communicationType: client.communicationType,
             project: client.project,
             notes: client.notes,
-            centerId: client.centerId,
+            // centerId: client.centerId,
+            centerId: client.centerId === 1 && 'ЦПП'
+                || client.centerId === 2 && 'ЦКР'
+                || client.centerId === 3 && 'ЦРИД'
+                || client.centerId === 4 && 'Инноватика'
+                || client.centerId === 5 && 'ГЧП'
+                || client.centerId === 6 && 'ЦПЭ'
+                || client.centerId === 7 && 'РЦК'
+                || client.centerId === 8 && 'Маркетинг'
+                || client.centerId === 9 && 'Входная гр.' ,
+
             createdAt: new Date(client.createdAt).toLocaleString(),
             updatedAt: new Date(client.updatedAt).toLocaleString(),
         });
