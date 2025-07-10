@@ -6,17 +6,22 @@ import { saveAs } from 'file-saver';
 
 interface ExcelExportButtonProps {
     allCenters?: boolean;
-    centerId?: number; // Сделать опциональным
+    centerId?: number;
 }
 
-export default function ExcelExportButton({ centerId, allCenters = false }: ExcelExportButtonProps) {
+export default function ExcelExportButton({ allCenters = false, centerId }: ExcelExportButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleExport = async () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch(`/api/clients?centerId=${allCenters ? '' : centerId}`);
+            // Формируем URL в зависимости от режима
+            const url = allCenters
+                ? '/api/clients/export-all'
+                : `/api/clients?centerId=${centerId}`;
+
+            const response = await fetch(url);
             const data = await response.json();
 
             if (!response.ok) throw new Error(data.error || 'Ошибка при получении данных');
