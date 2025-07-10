@@ -33,7 +33,7 @@ export default async function DepartmentPage() {
                 </Link>
                 <h1>Отдел</h1>
                 {/* Убрали centerId, так как allCenters=true */}
-                <ExcelExportButton allCenters={true} centerId={0} />
+                <ExcelExportButton allCenters={true} />
             </div>
 
             <div className="card mb-4">
