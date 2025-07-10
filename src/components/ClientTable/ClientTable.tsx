@@ -28,8 +28,10 @@ export default function ClientTable({ clients }: ClientTableProps) {
                     <th>ИНН</th>
                     <th>ФИО</th>
                     <th>Организация</th>
+                    <th>Телефон</th>
                     <th>Тип клиента</th>
                     <th>Проект</th>
+                    <th>Центр</th>
                     <th>Действия</th>
                 </tr>
                 </thead>
@@ -39,8 +41,20 @@ export default function ClientTable({ clients }: ClientTableProps) {
                         <td>{client.inn}</td>
                         <td>{`${client.lastName} ${client.firstName} ${client.middleName || ''}`}</td>
                         <td>{client.organizationName}</td>
+                        <td>{client.phone}</td>
                         <td>{client.clientType}</td>
                         <td>{client.project}</td>
+                        <td>
+                            {client.centerId === 1 ? 'ЦПП' : ''}
+                            {client.centerId === 2 ? 'ЦКР' : ''}
+                            {client.centerId === 3 ? 'ЦРИД' : ''}
+                            {client.centerId === 4 ? 'Инноватика' : ''}
+                            {client.centerId === 5 ? 'ГЧП' : ''}
+                            {client.centerId === 6 ? 'ЦПЭ' : ''}
+                            {client.centerId === 7 ? 'РЦК' : ''}
+                            {client.centerId === 8 ? 'Маркетинг' : ''}
+                            {client.centerId === 9 ? 'Входная гр.' : ''}
+                        </td>
                         <td>
                             <Link
                                 href={`/clients/${client.id}`}
@@ -49,6 +63,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
                                 Подробнее
                             </Link>
                         </td>
+
                     </tr>
                 ))}
                 </tbody>
