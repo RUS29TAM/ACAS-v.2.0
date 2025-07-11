@@ -41,6 +41,8 @@ export default function ClientForm({ centerId }: ClientFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [isCheckingInn, setIsCheckingInn] = useState(false);
+    const [isCheckingNameOrg, setIsCheckingNameOrg] = useState(false);
+
 
     const checkInn = useCallback(debounce(async (inn: string) => {
         if (!inn) return;
@@ -60,7 +62,10 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                         email: lastClient.email || '',
                         clientType: lastClient.clientType,
                         smsp: lastClient.smsp,
-                        // Остальные поля оставляем как есть
+                        middleName: lastClient.middleName,
+                        communicationType: lastClient.communicationType,
+                        project: lastClient.project,
+                        notes: lastClient.notes,
                     }));
                 }
             }
@@ -71,10 +76,47 @@ export default function ClientForm({ centerId }: ClientFormProps) {
         }
     }, 500), []);
 
+    const checkNameOrg = useCallback(debounce(async (organizationName: string) => {
+        if (!organizationName) return;
+
+        setIsCheckingNameOrg(true);
+        try {
+            const response = await fetch(`/api/clients/search-organizations?organizationName=${organizationName}`);
+            if (response.ok) {
+                const lastClient = await response.json();
+                if (lastClient) {
+                    setFormData(prev => ({
+                        ...prev,
+                        inn: lastClient.inn || '',
+                        lastName: lastClient.lastName,
+                        firstName: lastClient.firstName,
+                        phone: lastClient.phone,
+                        email: lastClient.email || '',
+                        clientType: lastClient.clientType,
+                        smsp: lastClient.smsp,
+                        middleName: lastClient.middleName,
+                        communicationType: lastClient.communicationType,
+                        project: lastClient.project,
+                        notes: lastClient.notes,
+                    }));
+                }
+            }
+        } catch (error) {
+            console.error('Error checking name org:', error);
+        } finally {
+            setIsCheckingNameOrg(false);
+        }
+    }, 500), []);
+
     const handleInnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setFormData(prev => ({ ...prev, inn: value }));
         checkInn(value);
+    };
+    const handleNameOrgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData(prev => ({ ...prev, organizationName: value }));
+        checkNameOrg(value);
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -154,8 +196,12 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                                 id="organizationName"
                                 name="organizationName"
                                 value={formData.organizationName}
-                                onChange={handleChange}
+                                onChange={handleNameOrgChange}
+                                required
                             />
+                            {isCheckingNameOrg && <span className="position-absolute top-50 end-0 translate-middle-y me-2">{isCheckingNameOrg && (
+                                <div className="form-text">Проверяем название организации...</div>
+                            )}</span>}
                         </div>
                     </div>
 
