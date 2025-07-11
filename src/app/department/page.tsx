@@ -3,22 +3,22 @@ import ExcelExportButton from '@/components/ExcelExportButton/ExcelExportButton'
 import prisma from '@/lib/prisma';
 import Link from "next/link";
 import CenterFilter from '@/components/CenterFilter/CenterFilter';
-
+import { PROJECTS } from '@/lib/constants';
 
 type PageProps = {
     searchParams: Promise<{ centerId: string }>;
 };
+
 export default async function DepartmentPage({
                                                  searchParams,
-                                             }:PageProps) {
-    // Получаем выбранный центр (если есть)
+                                             }: PageProps) {
     const centerId = (await searchParams)?.centerId ? parseInt((await searchParams).centerId) : undefined;
-    console.log(centerId)
+
     // Запросы данных
-    const [centers, stats, uniqueClients] = await Promise.all([
+    const [centers, stats, uniqueClients, smspStats, projectStats] = await Promise.all([
         prisma.center.findMany(),
 
-        // Общая статистика
+        // Общая статистика по типам клиентов
         prisma.client.groupBy({
             by: ['clientType'],
             _count: {
@@ -30,6 +30,21 @@ export default async function DepartmentPage({
         // Уникальные клиенты (по ИНН)
         prisma.client.groupBy({
             by: ['inn'],
+            where: centerId ? { centerId } : {},
+        }),
+
+        // Статистика по Субъектам МСП
+        prisma.client.groupBy({
+            by: ['smsp'],
+            _count: {
+                _all: true,
+            },
+            where: centerId ? { centerId } : {},
+        }),
+
+        // Статистика по проектам
+        prisma.client.groupBy({
+            by: ['project'],
             _count: {
                 _all: true,
             },
@@ -39,11 +54,19 @@ export default async function DepartmentPage({
 
     const totalClients = stats.reduce((sum, item) => sum + item._count._all, 0);
     const totalUniqueClients = uniqueClients.length;
+    const smspCount = smspStats.find(item => item.smsp)?._count._all || 0;
+    const nonSmspCount = smspStats.find(item => !item.smsp)?._count._all || 0;
 
     const clientTypes = ['ИП', 'СЗ', 'ЮЛ', 'ФЛ'];
     const statistics = clientTypes.map(type => ({
         type,
         total: stats.find(item => item.clientType === type)?._count._all || 0,
+    }));
+
+    // Статистика по проектам
+    const projectsStatistics = PROJECTS.map(project => ({
+        project,
+        count: projectStats.find(item => item.project === project)?._count._all || 0,
     }));
 
     return (
@@ -61,8 +84,9 @@ export default async function DepartmentPage({
             </div>
 
             {/* Общая статистика */}
+            <h3 className="mb-3">Общая статистика</h3>
             <Row className="mb-4">
-                <Col md={6}>
+                <Col md={4}>
                     <Card>
                         <CardBody className="text-center">
                             <CardTitle>Всего клиентов</CardTitle>
@@ -70,13 +94,19 @@ export default async function DepartmentPage({
                         </CardBody>
                     </Card>
                 </Col>
-                <Col md={6}>
+                <Col md={4}>
                     <Card>
                         <CardBody className="text-center">
-                            <CardTitle>Из них уникальных клиентов <small className="text-muted">
-                                (по ИНН)
-                            </small></CardTitle>
+                            <CardTitle>Уникальных клиентов <small className="text-muted">(по ИНН)</small></CardTitle>
                             <h2>{totalUniqueClients}</h2>
+                        </CardBody>
+                    </Card>
+                </Col>
+                <Col md={4}>
+                    <Card>
+                        <CardBody className="text-center">
+                            <CardTitle>Субъектов МСП</CardTitle>
+                            <h2>{smspCount}</h2>
                         </CardBody>
                     </Card>
                 </Col>
@@ -84,7 +114,7 @@ export default async function DepartmentPage({
 
             {/* Статистика по типам клиентов */}
             <h3 className="mb-3">Статистика по типам клиентов</h3>
-            <Row>
+            <Row className="mb-4">
                 {statistics.map(({ type, total }) => (
                     <Col md={3} key={type} className="mb-3">
                         <Card>
@@ -95,6 +125,42 @@ export default async function DepartmentPage({
                         </Card>
                     </Col>
                 ))}
+            </Row>
+
+            {/* Статистика по проектам */}
+            <h3 className="mb-3">Статистика по проектам</h3>
+            <Row className="mb-4">
+                {projectsStatistics.map(({ project, count }) => (
+                    <Col md={4} key={project} className="mb-3">
+                        <Card>
+                            <CardBody className="text-center">
+                                <CardTitle>{project}</CardTitle>
+                                <h4>{count}</h4>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+
+            {/* Статистика по Субъектам МСП */}
+            <h3 className="mb-3">Статистика по Субъектам МСП</h3>
+            <Row className="mb-4">
+                <Col md={6}>
+                    <Card>
+                        <CardBody className="text-center">
+                            <CardTitle>Являются Субъектами МСП</CardTitle>
+                            <h4>{smspCount}</h4>
+                        </CardBody>
+                    </Card>
+                </Col>
+                <Col md={6}>
+                    <Card>
+                        <CardBody className="text-center">
+                            <CardTitle>Не являются Субъектами МСП</CardTitle>
+                            <h4>{nonSmspCount}</h4>
+                        </CardBody>
+                    </Card>
+                </Col>
             </Row>
 
             <div className="mt-4">
