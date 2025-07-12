@@ -54,15 +54,14 @@ export default async function DepartmentClientsPage({ searchParams }: PageProps)
                 <Link href="/" className="btn btn-outline-secondary me-2">
                     На главную
                 </Link>
-                <Link href="/department" className="btn btn-outline-secondary me-2">
-                    Назад
-                </Link>
+
                 <h1>Все клиенты агентства</h1>
                 <div>
-                    <ExcelExportButton allCenters={true} />
-                    <Link href="/department" className="btn btn-outline-secondary ms-2">
+                    <Link href="/department" className="btn btn-outline-secondary me-2">
                         Назад
                     </Link>
+                    <ExcelExportButton allCenters={true} />
+
                 </div>
             </div>
 
