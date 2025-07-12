@@ -25,6 +25,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
             <table className="table table-striped table-hover">
                 <thead>
                 <tr>
+                    <th>Дата записи</th>
                     <th>ИНН</th>
                     <th>ФИО</th>
                     <th>Организация</th>
@@ -38,6 +39,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
                 <tbody>
                 {clients.map((client) => (
                     <tr key={client.id}>
+                        <td>{new Date(client.createdAt).toLocaleDateString()}</td>
                         <td>{client.inn}</td>
                         <td>{`${client.lastName} ${client.firstName} ${client.middleName || ''}`}</td>
                         <td>{client.organizationName}</td>
