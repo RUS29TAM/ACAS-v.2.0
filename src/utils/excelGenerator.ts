@@ -29,10 +29,10 @@ export async function generateExcelForCenter(clients: Client[], centerName: stri
         worksheet.addRow({
             id: client.id,
             inn: client.inn,
-            lastName: client.lastName,
+            lastName: client.lastName, /* TODO необходимо ли объединять данные в одну ячейку? <+ " " + client.firstName + " " +  client.middleName || ''> */
             firstName: client.firstName,
             middleName: client.middleName || '',
-            organizationName: client.organizationName || '',
+            organizationName:client.organizationName || '',  /* TODO необходимо ли объединять данные в одну ячейку? <client.clientType + " " + client.organizationName || ''>*/
             phone: client.phone,
             email: client.email || '',
             clientType: client.clientType,
@@ -51,8 +51,8 @@ export async function generateExcelForCenter(clients: Client[], centerName: stri
                 || client.centerId === 8 && 'Маркетинг'
                 || client.centerId === 9 && 'Входная гр.' ,
 
-            createdAt: new Date(client.createdAt).toLocaleString(),
-            updatedAt: new Date(client.updatedAt).toLocaleString(),
+            createdAt: new Date(client.createdAt), /*TODO убрать toLocaleString() для возможности ворматировать данные в таблице*/
+            updatedAt: new Date(client.updatedAt), /*убрать toLocaleString() */
         });
     });
 
