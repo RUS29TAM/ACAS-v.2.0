@@ -3,6 +3,7 @@ import React, {useCallback, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { CLIENT_TYPES, COMMUNICATION_TYPES, PROJECTS } from '@/lib/constants';
 import {debounce} from "next/dist/server/utils";
+import Link from "next/link";
 
 interface ClientFormProps {
     centerId: number;
@@ -338,7 +339,10 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                         />
                     </div>
 
-                    <div className="d-flex justify-content-end">
+                    <div className="d-flex justify-content-sm-between">
+                        <Link href="/" className="btn btn-outline-secondary me-2">
+                            На главную
+                        </Link>
                         <button
                             type="submit"
                             className="btn btn-primary"
