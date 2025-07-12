@@ -3,6 +3,7 @@
 import { Client } from '@/models/client';
 import { useState } from 'react';
 import { Button, Collapse, ListGroup } from 'react-bootstrap';
+import Link from "next/link";
 
 interface ClientViewProps {
     client: Client & { Center?: { name: string } };
@@ -67,6 +68,9 @@ export default function ClientView({ client }: ClientViewProps) {
                 </div>
 
                 <div className="mt-4">
+                    <Link href={"/"} className="btn btn-outline-secondary me-2">
+                        На главную
+                    </Link>
                     <Button
                         variant="outline-primary"
                         onClick={toggleHistory}
