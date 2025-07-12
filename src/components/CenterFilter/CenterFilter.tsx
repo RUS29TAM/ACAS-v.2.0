@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Form } from 'react-bootstrap';
 
 export default function CenterFilter({
                                          centers,
@@ -12,7 +13,7 @@ export default function CenterFilter({
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const centerId = e.target.value;
         const params = new URLSearchParams(searchParams.toString());
 
@@ -28,18 +29,30 @@ export default function CenterFilter({
     return (
         <div className="card">
             <div className="card-body">
-                <select
-                    className="form-select"
-                    value={selectedCenterId || ''}
-                    onChange={handleChange}
-                >
-                    <option value="">Все центры</option>
+                <div className="d-flex justify-content-sm-between">
+                    <Form.Check
+                        type="radio"
+                        id="center-all"
+                        name="centerFilter"
+                        label="Все центры"
+                        value=""
+                        checked={!selectedCenterId}
+                        onChange={handleChange}
+                    />
+
                     {centers.map(center => (
-                        <option key={center.id} value={center.id}>
-                            {center.name}
-                        </option>
+                        <Form.Check
+                            key={center.id}
+                            type="radio"
+                            id={`center-${center.id}`}
+                            name="centerFilter"
+                            label={center.name}
+                            value={center.id.toString()}
+                            checked={selectedCenterId === center.id}
+                            onChange={handleChange}
+                        />
                     ))}
-                </select>
+                </div>
             </div>
         </div>
     );
