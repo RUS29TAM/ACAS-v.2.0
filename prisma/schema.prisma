@@ -27,13 +27,14 @@ model Client {
   smsp              Boolean  @default(false) // Субъект МСП
   communicationType String // Личная встреча / Телефон / Электронное
   project           String // Акселерация / Вовлечение / Самозанятость
-  notes             String?
+  notes             String? // Примеачния
   centerId          Int
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   Center            Center   @relation(fields: [centerId], references: [id])
 
   @@index([inn])
+  // TODO добавить @@index([organizationName])
   @@index([lastName])
   @@index([clientType])
   @@index([project])
