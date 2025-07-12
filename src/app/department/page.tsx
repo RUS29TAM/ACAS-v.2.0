@@ -9,9 +9,7 @@ type PageProps = {
     searchParams: Promise<{ centerId: string }>;
 };
 
-export default async function DepartmentPage({
-                                                 searchParams,
-                                             }: PageProps) {
+export default async function DepartmentPage({searchParams,}: PageProps) {
     const centerId = (await searchParams)?.centerId ? parseInt((await searchParams).centerId) : undefined;
 
     // Запросы данных
@@ -57,7 +55,7 @@ export default async function DepartmentPage({
     const smspCount = smspStats.find(item => item.smsp)?._count._all || 0;
     const nonSmspCount = smspStats.find(item => !item.smsp)?._count._all || 0;
 
-    const clientTypes = ['ИП', 'СЗ', 'ЮЛ', 'ФЛ'];
+    const clientTypes = ['ИП', 'СЗ', 'ЮЛ', 'ФЛ', 'Другое'];
     const statistics = clientTypes.map(type => ({
         type,
         total: stats.find(item => item.clientType === type)?._count._all || 0,
