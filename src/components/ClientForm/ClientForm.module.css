@@ -1,0 +1,209 @@
+/*TODO подчистить неиспользуемые стили*/
+
+.formContainer {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    /*max-width: 1200px;*/
+    margin: 0 auto 15px;
+    display: flex;
+    flex-direction: column;
+}
+.formContainer input::placeholder,
+.formContainer textarea::placeholder{
+    color: rgba(128, 128, 128, 0.5);
+    text-transform: lowercase;
+    font-style: italic;
+}
+.formContainer input{
+    text-transform: uppercase;
+}
+
+.formHeader {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.formHeader h2 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.formSubtitle {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+.errorAlert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid #f5c6cb;
+}
+
+.formBody {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.formSection {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.sectionTitle {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    font-weight: 500;
+    color: #34495e;
+    font-size: 0.95rem;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(44, 62, 80, 0.2);
+    color: rgba(44, 62, 80, 0.2);
+}
+
+/*.formControl::placeholder {*/
+/*    background: #fff;*/
+/*    appearance: none;*/
+/*    color: red;*/
+/*}*/
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+.inputWithLoader {
+    position: relative;
+}
+
+.loader {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(52, 152, 219, 0.2);
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.checkboxGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.checkboxGroup input {
+    width: 18px;
+    height: 18px;
+    accent-color: #3498db;
+}
+
+.checkboxGroup label {
+    font-weight: 500;
+    color: #34495e;
+    font-size: 0.95rem;
+}
+
+.formActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.primaryButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.primaryButton:hover {
+    background-color: #2980b9;
+}
+
+.primaryButton:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+.secondaryButton {
+    background-color: white;
+    color: #3498db;
+    border: 1px solid #3498db;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+}
+
+.secondaryButton:hover {
+    background-color: #f8f9fa;
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
