@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/styles/globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import DatabaseStatusIndicator from "@/components/DatabaseStatusIndicator/DatabaseStatusIndicator";
 
 
 export const metadata: Metadata = {
@@ -16,7 +17,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+      <DatabaseStatusIndicator />
+      {children}
       </body>
     </html>
   );
