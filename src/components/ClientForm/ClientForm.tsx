@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { CLIENT_TYPES, COMMUNICATION_TYPES, PROJECTS } from '@/lib/constants';
 import {debounce} from "next/dist/server/utils";
 import Link from "next/link";
+import styles from '@/components/ClientForm/ClientForm.module.css'
 
 interface ClientFormProps {
     centerId: number;
@@ -66,7 +67,7 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                         middleName: lastClient.middleName || '',
                         communicationType: lastClient.communicationType,
                         project: lastClient.project,
-                        notes: lastClient.notes,
+                        notes: lastClient.notes || '',
                     }));
                 }
             }
@@ -98,7 +99,7 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                         middleName: lastClient.middleName || '',
                         communicationType: lastClient.communicationType,
                         project: lastClient.project,
-                        notes: lastClient.notes,
+                        notes: lastClient.notes || '',
                     }));
                 }
             }
@@ -166,13 +167,14 @@ export default function ClientForm({ centerId }: ClientFormProps) {
     };
 
     return (
-        <div className="card">
+        <div className={`"card" ${styles.formContainer}`} style={{background: '#edf2f4'}}>
             <div className="card-body">
-                <h2 className="card-title mb-4">Добавить нового клиента</h2>
+                <h2 className="card-title mb-4">Начните заполнять информацию о клиенте</h2>
+                <div style={{marginBottom: '30px', fontStyle: 'italic', color: "gray"}}>если клиент ранее был внесен в систему, данные формы автоматически заполнятся при вводе ИНН или названия организации</div>
 
                 {error && <div className="alert alert-danger">{error}</div>}
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className={` ${styles.formContainer}`} style={{background: '#f8f7ff'}}>
                     <div className="row mb-3">
                         <div className="col-md-6">
                             <label htmlFor="inn" className="form-label">ИНН</label>
@@ -184,8 +186,9 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                                 value={formData.inn}
                                 onChange={handleInnChange}
                                 required
+                                placeholder={'10-12 цифр'}
                             />
-                            {isCheckingInn && <span className="position-absolute top-50 end-0 translate-middle-y me-2">{isCheckingInn && (
+                            {isCheckingInn && <span className="position-absolute top-50 end-50 translate-middle-y me-2">{isCheckingInn && (
                                 <div className="form-text">Проверяем ИНН...</div>
                             )}</span>}
                         </div>
@@ -199,8 +202,9 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                                 value={formData.organizationName}
                                 onChange={handleNameOrgChange}
                                 required
+                                placeholder={'только название'}
                             />
-                            {isCheckingNameOrg && <span className="position-absolute top-50 end-0 translate-middle-y me-2">{isCheckingNameOrg && (
+                            {isCheckingNameOrg && <span className="position-absolute top-50 end-50 translate-middle-y me-2">{isCheckingNameOrg && (
                                 <div className="form-text">Проверяем название организации...</div>
                             )}</span>}
                         </div>
@@ -249,12 +253,14 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                             <label htmlFor="phone" className="form-label">Телефон</label>
                             <input
                                 type="tel"
+                                // className={`"form-control" ${styles.formControl}`}
                                 className="form-control"
                                 id="phone"
                                 name="phone"
                                 value={formData.phone}
                                 onChange={handleChange}
                                 required
+                                placeholder={'89210000000'}
                             />
                         </div>
                         <div className="col-md-6">
@@ -336,6 +342,8 @@ export default function ClientForm({ centerId }: ClientFormProps) {
                             rows={3}
                             value={formData.notes}
                             onChange={handleChange}
+                            required
+                            placeholder={'Введите информацию о теме переговоров/консультации'}
                         />
                     </div>
 
